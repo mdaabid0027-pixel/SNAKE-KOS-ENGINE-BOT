@@ -1,0 +1,93 @@
+/*CMD
+  command: /adminPanel
+  help: 
+  need_reply: false
+  auto_retry_time: 
+  folder: 
+  answer: /userhistory USERID
+
+  <<KEYBOARD
+
+  KEYBOARD
+  aliases: 
+  group: 
+CMD*/
+
+/*CMD
+command: /adminPanel
+folder: Admin Panel
+*/
+
+let admin = Bot.getProperty("admin");
+let userId = user.telegramid;
+let realAdmin = 5006281199;
+let botLink = "@" + bot.name;
+
+if (userId == admin) {
+
+let adminName = user.first_name;
+
+let text =
+"👋 <b>Hello " + adminName + "</b>\n\n" +
+"Welcome to <b>Admin Panel</b> of " + botLink + "\n\n" +
+"Manage your bot from options below:";
+
+let buttons = [
+
+[
+{ text: "📦 Upload Snake Stock", callback_data: "/stockSnakeEngine" },
+{ text: "📦 Upload Kos Stock", callback_data: "/stockKosEngine" }
+],
+
+[
+{ text: "📊 View Stock", callback_data: "/viewStock" },
+{ text: "💲 Set User Price", callback_data: "/managePrices" }
+],
+
+[
+{ text: "💼 View Resellers", callback_data: "/viewReseller" },
+{ text: "🔐 Add Reseller", callback_data: "/addreseller" }
+],
+
+[
+{ text: "🚫 Remove Reseller", callback_data: "/removereseller" },
+{ text: "➕ Add Balance", callback_data: "/addbalance" }
+],
+
+[
+{ text: "➖ Remove Balance", callback_data: "/removebalance" },
+{ text: "📄 Change QR", callback_data: "/changeQR" }
+],
+
+[
+{ text: "📡 Set Log Channel", callback_data: "/setlogchannel" },
+{ text: "🚨 Set Alert Channel", callback_data: "/setalertchannel" }
+]
+
+];
+
+Api.sendMessage({
+text: text,
+reply_markup: { inline_keyboard: buttons },
+parse_mode: "HTML"
+});
+
+} else {
+
+let username = user.username ? "@" + user.username : "NoUsername";
+
+Api.sendMessage({
+chat_id: realAdmin,
+text:
+"🚨 <b>Unauthorized Admin Panel Access Attempt</b>\n\n" +
+"👤 Username: " + username +
+"\n🆔 ID: <code>" + userId + "</code>",
+parse_mode: "HTML"
+});
+
+Api.sendMessage({
+text: "⚠️ You are not authorized to access admin panel.",
+parse_mode: "HTML"
+});
+
+}
