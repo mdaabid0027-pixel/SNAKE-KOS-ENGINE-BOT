@@ -1,5 +1,5 @@
 /*CMD
-  command: Purchase History
+  command: 🧾 Purchase History
   help: 
   need_reply: false
   auto_retry_time: 

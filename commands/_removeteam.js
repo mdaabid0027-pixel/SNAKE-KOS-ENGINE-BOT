@@ -18,7 +18,7 @@ CMD*/
 
 let admin = Bot.getProperty("admin");
 
-if (user.telegramid != 5006281199) {
+if (user.telegramid != admin) {
   Bot.sendMessage("Only admin allowed.");
   return;
 }

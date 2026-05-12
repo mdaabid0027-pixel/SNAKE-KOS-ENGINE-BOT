@@ -22,6 +22,6 @@ command: 15 Days
 
 Bot.setProperty(user.telegramid + "_selected_duration", "15", "string");
 
-User.setProperty("purchase_step", "game", "string");
+User.setProperty("purchase_step", "duration", "string");
 
-Bot.runCommand("selectGameMenu");
+Bot.runCommand("confirmPurchase");

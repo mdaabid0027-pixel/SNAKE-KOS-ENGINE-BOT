@@ -22,6 +22,8 @@ command: /setResellerSnake
 
 User.setProperty("reseller_engine","snake","string");
 
+User.setProperty("grid_type","snake","string");
+
 Api.sendMessage({
 parse_mode: "HTML",
 text:
@@ -49,4 +51,7 @@ text:
 "</code></u>"
 });
 
-Bot.runCommand("saveGlobalResellerGrid");
+// WAIT FOR REPLY
+Bot.run({
+command: "saveGlobalResellerGrid"
+});

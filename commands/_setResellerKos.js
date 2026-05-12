@@ -20,7 +20,9 @@ CMD*/
 command: /setResellerKos
 */
 
-User.setProperty("reseller_engine","kos","string");
+User.setProperty("reseller_engine", "kos", "string");
+
+User.setProperty("grid_type","kos","string");
 
 Api.sendMessage({
 parse_mode: "HTML",
@@ -41,12 +43,17 @@ text:
 "kos_carrom_15=XX\n" +
 "kos_carrom_30=XX\n\n" +
 
-"kos_soccer_1=XX\n" +
-"kos_soccer_7=XX\n" +
-"kos_soccer_15=XX\n" +
-"kos_soccer_30=XX" +
+"kos_freefire_1=XX\n" +
+"kos_freefire_7=XX\n" +
+"kos_freefire_15=XX\n" +
+"kos_freefire_30=XX" +
 
-"</code></u>"
+"</code></u>\n\n" +
+
+"⚠️ Soccer removed from Kos Engine"
 });
 
-Bot.runCommand("saveGlobalResellerGrid");
+// WAIT FOR REPLY
+Bot.run({
+command: "saveGlobalResellerGrid"
+});

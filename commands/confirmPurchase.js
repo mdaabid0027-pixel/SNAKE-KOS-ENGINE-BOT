@@ -20,90 +20,232 @@ CMD*/
 command: confirmPurchase
 */
 
-let uid = user.telegramid;
+let uid = user.telegramid.toString();
 
-let app = Bot.getProperty(uid + "_selected_app");
-let game = Bot.getProperty(uid + "_selected_game");
-let duration = Bot.getProperty(uid + "_selected_duration");
+let app =
+Bot.getProperty(uid + "_selected_app");
 
-if(!app || !game || !duration){
+let game =
+Bot.getProperty(uid + "_selected_game");
 
-Bot.sendMessage("❌ Session expired.");
-Bot.runCommand("/start");
-return;
+let duration =
+Bot.getProperty(uid + "_selected_duration");
 
-}
+// session check
 
-game = game.toLowerCase();
+if (!app || !game || !duration) {
 
-let priceKey = app + "_" + game + "_" + duration + "_price";
-let price = Bot.getProperty(priceKey) || 0;
+  Bot.sendMessage(
+    "⚠️ Session expired. Please start again."
+  );
 
-let balKey = uid + "_balance";
-let balance = Bot.getProperty(balKey) || 0;
+  Bot.runCommand("/start");
 
-let stockKey = app + "_" + game + "_" + duration + "_stock";
-let stock = Bot.getProperty(stockKey) || [];
-
-let stockCount = Array.isArray(stock) ? stock.length : 0;
-
-let appName = (app == "snake") ? "Snake Engine" : "Kos Engine";
-
-// price check
-if(price <= 0){
-
-Bot.sendMessage(
-"❌ Price not configured.\n\n" +
-"Product: " + appName +
-"\nGame: " + game.toUpperCase() +
-"\nDuration: " + duration + " Days"
-);
-
-return;
+  return;
 
 }
 
-// balance check FIRST
-if(balance < price){
+game = game.toLowerCase().trim();
 
-Bot.sendMessage(
-"❌ Insufficient Balance\n\n" +
-"Price per key: ₹" + price +
-"\nYour balance: ₹" + balance +
-"\n\nPlease add balance first."
-);
+duration = duration.toString().trim();
 
-return;
+let baseKey =
+app + "_" + game + "_" + duration;
+
+// reseller check
+
+let teamList =
+Bot.getProperty("team_list") || [];
+
+let isReseller =
+teamList.map(String).includes(uid);
+
+// pricing
+
+let grid =
+Bot.getProperty(uid + "_grid") || {};
+
+let price = 0;
+
+if (
+  isReseller &&
+  grid[baseKey] !== undefined
+) {
+
+  price = Number(grid[baseKey]);
+
+} else {
+
+  price = Number(
+    Bot.getProperty(baseKey + "_price")
+  ) || 0;
 
 }
 
-// show confirm screen EVEN IF stock = 0
+// price missing
 
-Api.sendMessage({
-parse_mode: "HTML",
-text:
-"🛒 <b>Confirm Purchase</b>\n\n" +
-"📦 Product: " + appName +
-"\n🎮 Game: " + game.toUpperCase() +
-"\n⏳ Duration: " + duration + " Days" +
-"\n💰 Price per key: ₹" + price +
-"\n📊 Stock Available: " + stockCount +
-"\n\nSelect quantity:",
-reply_markup:{
-inline_keyboard:[
-[
-{ text:"1 Key", callback_data:"/buyqty 1" },
-{ text:"2 Keys", callback_data:"/buyqty 2" }
-],
-[
-{ text:"5 Keys", callback_data:"/buyqty 5" },
-{ text:"10 Keys", callback_data:"/buyqty 10" }
-]
-]
+if (price <= 0) {
+
+  Bot.sendMessage(
+    "❌ Price not configured.\n\n" +
+    "Product: " + app +
+    "\nGame: " +
+    game.toUpperCase() +
+    "\nDuration: " +
+    duration + " Days"
+  );
+
+  return;
+
 }
-});
 
-Bot.sendKeyboard(
-"Cancel 🚫",
-"Press Cancel to return to menu"
-);
+// stock
+
+let stock =
+Bot.getProperty(baseKey + "_stock") || [];
+
+let stockCount =
+Array.isArray(stock)
+? stock.length
+: 0;
+
+// app name
+
+let appName =
+(app == "snake")
+? "Snake Engine"
+: "Kos Engine";
+
+// =====================
+// RESELLER FLOW
+// =====================
+
+if (isReseller) {
+
+  Api.sendMessage({
+
+    parse_mode: "HTML",
+
+    on_result: "/savePurchaseMsg",
+
+    text:
+
+      "🛒 <b>Confirm Purchase</b>\n\n" +
+
+      "📦 Product: " + appName +
+
+      "\n🎮 Game: " +
+      game.toUpperCase() +
+
+      "\n⏳ Duration: " +
+      duration + " Days" +
+
+      "\n💰 Price per key: ₹" +
+      price +
+
+      "\n📊 Stock Available: " +
+      stockCount +
+
+      "\n👤 Role: Reseller" +
+
+      "\n\nSelect quantity:",
+
+    reply_markup: {
+
+      inline_keyboard: [
+
+        [
+          {
+            text: "1 Key",
+            callback_data: "/buyqty 1"
+          },
+
+          {
+            text: "2 Keys",
+            callback_data: "/buyqty 2"
+          }
+        ],
+
+        [
+          {
+            text: "5 Keys",
+            callback_data: "/buyqty 5"
+          },
+
+          {
+            text: "10 Keys",
+            callback_data: "/buyqty 10"
+          }
+        ],
+
+        [
+          {
+            text: "❌ Cancel",
+            callback_data:
+            "/cancelPurchase"
+          }
+        ]
+
+      ]
+    }
+
+  });
+
+} else {
+
+// =====================
+// NORMAL USER FLOW
+// =====================
+
+  Api.sendMessage({
+
+    parse_mode: "HTML",
+
+    on_result: "/savePurchaseMsg",
+
+    text:
+
+      "🛒 <b>Confirm Purchase</b>\n\n" +
+
+      "📦 Product: " + appName +
+
+      "\n🎮 Game: " +
+      game.toUpperCase() +
+
+      "\n⏳ Duration: " +
+      duration + " Days" +
+
+      "\n💰 Price: ₹" +
+      price +
+
+      "\n📊 Stock Available: " +
+      stockCount +
+
+      "\n👤 Role: User" +
+
+      "\n\nDo you want to continue?",
+
+    reply_markup: {
+
+      inline_keyboard: [
+
+        [
+          {
+            text: "✅ Yes",
+            callback_data:
+            "/purchaseNow"
+          },
+
+          {
+            text: "❌ No",
+            callback_data:
+            "/cancelPurchase"
+          }
+        ]
+
+      ]
+    }
+
+  });
+
+}

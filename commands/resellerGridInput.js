@@ -17,59 +17,121 @@
 CMD*/
 
 /*CMD
-  command: resellerGridInput
-  need_reply: true
-  folder: Admin Panel
+command: resellerGridInput
+need_reply: true
 */
 
 let admin = Bot.getProperty("admin");
 
-if (user.telegramid != admin) return;
+if(user.telegramid != admin){
 
-let targets = Bot.getProperty("reseller_add_targets");
+Bot.sendMessage("❌ Only admin allowed.");
+return;
 
-if (!targets || targets.length === 0) {
-  return Bot.sendMessage("⚠️ No reseller IDs found.");
 }
 
+// reseller ids
+let ids =
+Bot.getProperty("reseller_add_targets") || [];
+
+if(ids.length == 0){
+
+Bot.sendMessage("❌ No reseller targets found.");
+return;
+
+}
+
+// parse grid
 let lines = message.split("\n");
 
-let pricing = {};
+let parsedGrid = {};
 
-for (let line of lines) {
+for(let line of lines){
 
-  line = line.trim();
+if(!line.includes("=")) continue;
 
-  if (!line.includes("=")) continue;
+let parts = line.split("=");
 
-  let parts = line.split("=");
+let key =
+parts[0].trim().toLowerCase();
 
-  let key = parts[0].trim().toLowerCase();
-  let price = parseFloat(parts[1]);
+let valueRaw =
+parts[1].trim();
 
-  if (!key || isNaN(price)) continue;
-
-  pricing[key] = price;
+// skip XX
+if(valueRaw.toUpperCase() == "XX"){
+continue;
 }
 
-// load team list
-let teamList = Bot.getProperty("team_list") || [];
+let value = Number(valueRaw);
 
-for (let i = 0; i < targets.length; i++) {
-
-  let uid = targets[i];
-
-  Bot.setProperty(uid + "_grid", pricing, "json");
-
-  Bot.setProperty(uid + "_isReseller", true, "boolean");
-
-  if (!teamList.includes(uid)) {
-    teamList.push(uid);
-  }
+if(isNaN(value)){
+continue;
 }
 
-Bot.setProperty("team_list", teamList, "json");
+parsedGrid[key] = value;
 
-Bot.setProperty("reseller_add_targets", null, "json");
+}
 
-Bot.sendMessage("✅ Reseller pricing applied successfully.");
+// no valid price
+if(Object.keys(parsedGrid).length == 0){
+
+Bot.sendMessage(
+"❌ No valid prices found."
+);
+
+return;
+
+}
+
+// load reseller list
+let team =
+Bot.getProperty("team_list") || [];
+
+team = team.map(String);
+
+// add/update all ids
+for(let uid of ids){
+
+uid = uid.toString();
+
+// add reseller if missing
+if(!team.includes(uid)){
+team.push(uid);
+}
+
+// save custom grid
+Bot.setProperty(
+uid + "_grid",
+parsedGrid,
+"json"
+);
+
+// notify reseller
+Api.sendMessage({
+chat_id: uid,
+text:
+"🎉 You are now added as a Reseller.\n\n" +
+"Custom reseller pricing applied."
+});
+
+}
+
+// save reseller list
+Bot.setProperty(
+"team_list",
+team,
+"json"
+);
+
+// success
+Bot.sendMessage(
+"✅ Reseller pricing applied successfully.\n\n" +
+"👥 Total Updated: " + ids.length
+);
+
+// clear temp
+Bot.setProperty(
+"reseller_add_targets",
+null
+);

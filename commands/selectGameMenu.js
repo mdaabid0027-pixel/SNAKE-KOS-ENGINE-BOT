@@ -20,16 +20,23 @@ CMD*/
 command: selectGameMenu
 */
 
-User.setProperty("purchase_step", "game", "string");
+let app = Bot.getProperty(user.telegramid + "_selected_app");
 
-Api.sendMessage({
-  text: "Select Game:",
-  reply_markup: {
-    keyboard: [
-      ["8BP", "Carrom"],
-      ["Soccer"],
-      ["⬅️ Back"]
-    ],
-    resize_keyboard: true
-  }
-});
+if(app == "snake"){
+  Bot.sendKeyboard(
+    "8BP\nCarrom\nSoccer\n🔙 Back",
+    "Select Game:"
+  );
+  return;
+}
+
+if(app == "kos"){
+  Bot.sendKeyboard(
+    "8BP\nCarrom\nFree Fire\n🔙 Back",
+    "Select Game:"
+  );
+  return;
+}
+
+Bot.sendMessage("❌ App not selected.");
+Bot.runCommand("/start");

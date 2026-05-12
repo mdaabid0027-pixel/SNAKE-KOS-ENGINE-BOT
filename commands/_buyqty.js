@@ -20,102 +20,81 @@ CMD*/
 command: /buyqty
 */
 
-let uid = user.telegramid;
+let uid = user.telegramid.toString();
+let qty = parseInt(params) || 1;
 
-// check session validity first
+let teamList = Bot.getProperty("team_list") || [];
+let isReseller = teamList.map(String).includes(uid);
+
+// session
 let app = Bot.getProperty(uid + "_selected_app");
 let game = Bot.getProperty(uid + "_selected_game");
 let duration = Bot.getProperty(uid + "_selected_duration");
 
-if(!app || !game || !duration){
-
-Bot.sendMessage(
-"⚠️ Session expired.\nPlease select product again."
-);
-
-Bot.runCommand("/start");
-
-return;
-
+if (!app || !game || !duration) {
+  Bot.sendMessage("⚠️ Session expired. Please start again.");
+  Bot.runCommand("/start");
+  return;
 }
 
-// quantity
-let qty = parseInt(params);
+game = game.toLowerCase().trim();
+duration = duration.toString().trim();
 
-if(!qty || qty <= 0){
+let baseKey = app + "_" + game + "_" + duration;
 
-Bot.sendMessage("❌ Invalid quantity.");
+let grid = Bot.getProperty(uid + "_grid") || {};
+let price = 0;
 
-return;
-
+if (isReseller && grid[baseKey] !== undefined) {
+  price = Number(grid[baseKey]);
+} else {
+  price = Number(Bot.getProperty(baseKey + "_price")) || 0;
 }
 
-game = game.toLowerCase();
-
-// stock check
-let stockKey = app + "_" + game + "_" + duration + "_stock";
-
-let stock = Bot.getProperty(stockKey) || [];
-
-let stockCount = Array.isArray(stock) ? stock.length : 0;
-
-// ❌ stock check LAST
-if(stockCount < qty){
-
-Bot.sendMessage(
-"❌ Not enough stock available.\n\nRequested: " +
-qty +
-"\nAvailable: " +
-stockCount
-);
-
-// notify admin
-let admin = Bot.getProperty("admin");
-
-if(admin){
-
-Api.sendMessage({
-chat_id: admin,
-text:
-"🚨 STOCK ALERT\n\n" +
-"User: @" + (user.username || "NoUsername") +
-"\nEngine: " + app +
-"\nGame: " + game +
-"\nDuration: " + duration +
-"\nRequested: " + qty +
-"\nAvailable: " + stockCount
-});
-
+if (price <= 0) {
+  Bot.sendMessage("❌ Price not configured.");
+  return;
 }
 
-// reset session
-Bot.setProperty(uid + "_bulk_qty", null);
-Bot.setProperty(uid + "_selected_game", null);
-Bot.setProperty(uid + "_selected_duration", null);
-
-// redirect
-Bot.runCommand("/start");
-
-return;
-
+// normal user = only 1 key
+if (!isReseller) {
+  qty = 1;
+  Bot.setProperty(uid + "_bulk_qty", 1, "integer");
+  Bot.runCommand("confirmPurchase");
+  return;
 }
 
-// save quantity
+// reseller flow
 Bot.setProperty(uid + "_bulk_qty", qty, "integer");
 
-// run purchase engine
-if(app == "snake"){
+let totalPrice = price * qty;
+let appName = (app == "snake") ? "Snake Engine" : "Kos Engine";
 
-Bot.runCommand("/co");
+Api.sendMessage({
+  parse_mode: "HTML",
+  text:
+    "🧾 <b>Invoice</b>\n\n" +
+    "📦 Product: " + appName +
+    "\n🎮 Game: " + game.toUpperCase() +
+    "\n⏳ Duration: " + duration + " Days" +
+    "\n🔢 Quantity: " + qty +
+    "\n💰 Price per key: ₹" + price +
+    "\n🧮 Total Price: ₹" + totalPrice +
+    "\n\nConfirm this order?",
+  reply_markup: {
+    inline_keyboard: [
+      [
+        { text: "✅ Confirm Order", callback_data: "/purchaseNow" }
+      ],
+      [
+        { text: "❌ Cancel", callback_data: "/cancelPurchase" }
+      ]
+    ]
+  }
+});
 
-return;
-
-}
-
-if(app == "kos"){
-
-Bot.runCommand("/kosco");
-
-return;
-
-}
+// bottom keyboard
+Bot.sendKeyboard(
+  "🔙 Back",
+  "Choose action"
+);

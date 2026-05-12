@@ -1,5 +1,5 @@
 /*CMD
-  command: Check Balance
+  command: 💳 Check Balance
   help: 
   need_reply: false
   auto_retry_time: 

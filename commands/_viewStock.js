@@ -33,6 +33,7 @@ if (user.telegramid != admin) {
 // Helper function
 function getStock(key) {
   let arr = Bot.getProperty(key);
+
   if (!arr || !Array.isArray(arr) || arr.length === 0) {
     return { count: 0, list: "— No stock —" };
   }
@@ -44,28 +45,49 @@ function getStock(key) {
   return { count: arr.length, list: formatted };
 }
 
+// ================= SNAKE ENGINE =================
 // 8BP
-let s8_3  = getStock("8bp_3day_stock");
-let s8_10 = getStock("8bp_10day_stock");
-let s8_30 = getStock("8bp_30day_stock");
-let s8_90 = getStock("8bp_90day_stock");
+let s8_3  = getStock("snake_8bp_3_stock");
+let s8_10 = getStock("snake_8bp_10_stock");
+let s8_30 = getStock("snake_8bp_30_stock");
+let s8_90 = getStock("snake_8bp_90_stock");
 
 // Carrom
-let sc_3  = getStock("carom_3day_stock");
-let sc_10 = getStock("carom_10day_stock");
-let sc_30 = getStock("carom_30day_stock");
-let sc_90 = getStock("carom_90day_stock");
+let sc_3  = getStock("snake_carrom_3_stock");
+let sc_10 = getStock("snake_carrom_10_stock");
+let sc_30 = getStock("snake_carrom_30_stock");
+let sc_90 = getStock("snake_carrom_90_stock");
 
 // Soccer
-let ss_3  = getStock("soccer_3day_stock");
-let ss_10 = getStock("soccer_10day_stock");
-let ss_30 = getStock("soccer_30day_stock");
-let ss_90 = getStock("soccer_90day_stock");
+let ss_3  = getStock("snake_soccer_3_stock");
+let ss_10 = getStock("snake_soccer_10_stock");
+let ss_30 = getStock("snake_soccer_30_stock");
+let ss_90 = getStock("snake_soccer_90_stock");
+
+// ================= KOS ENGINE =================
+// 8BP
+let k8_1  = getStock("kos_8bp_1_stock");
+let k8_7  = getStock("kos_8bp_7_stock");
+let k8_15 = getStock("kos_8bp_15_stock");
+let k8_30 = getStock("kos_8bp_30_stock");
+
+// Carrom
+let kc_1  = getStock("kos_carrom_1_stock");
+let kc_7  = getStock("kos_carrom_7_stock");
+let kc_15 = getStock("kos_carrom_15_stock");
+let kc_30 = getStock("kos_carrom_30_stock");
+
+// Free Fire
+let kf_1  = getStock("kos_freefire_1_stock");
+let kf_7  = getStock("kos_freefire_7_stock");
+let kf_15 = getStock("kos_freefire_15_stock");
+let kf_30 = getStock("kos_freefire_30_stock");
 
 // Final Message
 let msg =
 "<b>📦 FULL STOCK LIST</b>\n\n" +
 
+"<b>🐍 Snake Engine</b>\n" +
 "<b>🎮 8BP</b>\n" +
 "3D (" + s8_3.count + ")\n" + s8_3.list + "\n\n" +
 "10D (" + s8_10.count + ")\n" + s8_10.list + "\n\n" +
@@ -82,7 +104,26 @@ let msg =
 "3D (" + ss_3.count + ")\n" + ss_3.list + "\n\n" +
 "10D (" + ss_10.count + ")\n" + ss_10.list + "\n\n" +
 "30D (" + ss_30.count + ")\n" + ss_30.list + "\n\n" +
-"90D (" + ss_90.count + ")\n" + ss_90.list;
+"90D (" + ss_90.count + ")\n" + ss_90.list + "\n\n" +
+
+"<b>🚀 Kos Engine</b>\n" +
+"<b>🎮 8BP</b>\n" +
+"1D (" + k8_1.count + ")\n" + k8_1.list + "\n\n" +
+"7D (" + k8_7.count + ")\n" + k8_7.list + "\n\n" +
+"15D (" + k8_15.count + ")\n" + k8_15.list + "\n\n" +
+"30D (" + k8_30.count + ")\n" + k8_30.list + "\n\n" +
+
+"<b>🎮 Carrom</b>\n" +
+"1D (" + kc_1.count + ")\n" + kc_1.list + "\n\n" +
+"7D (" + kc_7.count + ")\n" + kc_7.list + "\n\n" +
+"15D (" + kc_15.count + ")\n" + kc_15.list + "\n\n" +
+"30D (" + kc_30.count + ")\n" + kc_30.list + "\n\n" +
+
+"<b>🎮 Free Fire</b>\n" +
+"1D (" + kf_1.count + ")\n" + kf_1.list + "\n\n" +
+"7D (" + kf_7.count + ")\n" + kf_7.list + "\n\n" +
+"15D (" + kf_15.count + ")\n" + kf_15.list + "\n\n" +
+"30D (" + kf_30.count + ")\n" + kf_30.list;
 
 Api.sendMessage({
   text: msg,

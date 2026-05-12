@@ -21,5 +21,4 @@ command: 8BP
 */
 
 Bot.setProperty(user.telegramid + "_selected_game", "8bp", "string");
-
-Bot.runCommand("confirmPurchase");
+Bot.runCommand("selectDurationMenu");

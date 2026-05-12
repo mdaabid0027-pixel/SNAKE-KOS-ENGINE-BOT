@@ -21,7 +21,7 @@ CMD*/
   folder: Admin Panel
 CMD*/
 
-let admin = 5006281199;
+let admin = Bot.getProperty("admin");
 
 if (user.telegramid != admin) {
   Bot.sendMessage("Only admin allowed.");

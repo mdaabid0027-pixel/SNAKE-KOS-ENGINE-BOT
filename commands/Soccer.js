@@ -20,6 +20,5 @@ CMD*/
 command: Soccer
 */
 
-Bot.setProperty(user.telegramid + "_selected_game", "Soccer", "string");
-
-Bot.runCommand("confirmPurchase");
+Bot.setProperty(user.telegramid + "_selected_game", "soccer", "string");
+Bot.runCommand("selectDurationMenu");
