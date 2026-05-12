@@ -21,134 +21,126 @@ command: /start
 */
 
 // ==============================
-// 🔔 ADMIN NOTIFY
+// ✅ NORMALIZE USER LIST
+// ==============================
+
+let uid = user.telegramid.toString();
+let list = Bot.getProperty("user_list") || [];
+list = list.map(String);
+
+let isNewUser = !list.includes(uid);
+
+// ==============================
+// 👤 SAVE USER DATA
+// ==============================
+
+Bot.setProperty(
+  uid + "_username",
+  user.username || "NoUsername",
+  "string"
+);
+
+Bot.setProperty(
+  uid + "_name",
+  user.first_name + (user.last_name ? " " + user.last_name : ""),
+  "string"
+);
+
+// ==============================
+// 🆕 ADMIN NOTIFY ONLY FOR NEW USER
 // ==============================
 
 let admin = Bot.getProperty("admin");
 
-if(admin){
+if (isNewUser) {
 
-Api.sendMessage({
-chat_id: admin,
-parse_mode: "HTML",
-text:
-"🚀 <b>User Opened Bot</b>\n\n" +
-"👤 Name: " + user.first_name +
-"\n🆔 ID: <code>" + user.telegramid + "</code>" +
-"\n📛 Username: @" + (user.username || "NoUsername")
-});
+  list.push(uid);
+  Bot.setProperty("user_list", list, "json");
 
-}
+  let userNumber = list.length;
 
-
-// ==============================
-// ✅ SAVE USER DATA
-// ==============================
-
-let list = Bot.getProperty("user_list") || [];
-
-if(!list.includes(user.telegramid)){
-
-list.push(user.telegramid);
-Bot.setProperty("user_list", list, "json");
+  if (admin) {
+    Api.sendMessage({
+      chat_id: admin,
+      parse_mode: "HTML",
+      text:
+        "🆕 <b>New User Joined Bot</b>\n\n" +
+        "👤 Name: " + (user.first_name || "NoName") +
+        "\n📛 Username: @" + (user.username || "NoUsername") +
+        "\n🆔 ID: <code>" + uid + "</code>" +
+        "\n\n📊 <b>User Number:</b> #" + userNumber +
+        "\n👥 <b>Total Users:</b> " + userNumber
+    });
+  }
 
 }
-
-// save username
-Bot.setProperty(
-user.telegramid + "_username",
-user.username || "NoUsername",
-"string"
-);
-
-// save full name
-Bot.setProperty(
-user.telegramid + "_name",
-user.first_name + (user.last_name ? " " + user.last_name : ""),
-"string"
-);
-
 
 // ==============================
 // 👑 CHECK RESELLER
 // ==============================
 
-let uid = user.telegramid.toString();
-
 let teamList = Bot.getProperty("team_list") || [];
-
 let isReseller = teamList.map(String).includes(uid);
-
 
 // ==============================
 // 📢 LOAD GLOBAL OFFER
 // ==============================
 
 let offer = Bot.getProperty("global_offer");
-
 let offerText = "";
 
-if(offer){
-
-offerText =
-"📢 <b>Special Offer</b>\n\n" +
-offer +
-"\n\n━━━━━━━━━━━━━━━━━━\n\n";
-
+if (offer) {
+  offerText =
+    "📢 <b>Special Offer</b>\n\n" +
+    offer +
+    "\n\n━━━━━━━━━━━━━━━━━━\n\n";
 }
-
 
 // ==============================
 // 📝 WELCOME MESSAGE
 // ==============================
 
-let msg;
+let msg = "";
 
-if(isReseller){
-
-msg =
-offerText +
-"👋 Welcome Reseller!\n\n" +
-"Use the menu below to manage purchases, stock and balance.";
-
-}else{
-
-msg =
-offerText +
-"👋 Welcome!\n\n" +
-"Use the menu below to purchase keys and manage your account.";
-
+if (isReseller) {
+  msg =
+    offerText +
+    "👋 Welcome Reseller!\n\n" +
+    "Use the menu below to manage purchases, stock and balance.";
+} else {
+  msg =
+    offerText +
+    "👋 Welcome!\n\n" +
+    "Use the menu below to purchase keys and manage your account.";
 }
-
 
 // ==============================
 // ✅ MAIN MENU
 // ==============================
 
 Api.sendMessage({
-text: msg,
-parse_mode: "HTML",
-reply_markup: {
-keyboard: [
+  text: msg,
+  parse_mode: "HTML",
+  reply_markup: {
+    keyboard: [
 
-[
-{ text: "Purchase Product" },
-{ text: "Purchase History" }
-],
+      [
+        { text: "🛒 Purchase Product" }
+      ],
 
-[
-{ text: "Check Balance" },
-{ text: "Add Balance" }
-],
+      [
+        { text: "💳 Check Balance" },
+        { text: "➕ Add Balance" }
+      ],
 
-[
-{ text: "Check Stock" }
-]
+      [
+        { text: "📦 Check Stock" },
+        { text: "🧾 Purchase History" }
+      ]
 
-],
+    ],
 
-resize_keyboard: true
-
-}
-
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

@@ -18,9 +18,9 @@ command: /broadcast
 need_reply: true
 */
 
-let OWNER_ID = 5006281199;
+let admin = Bot.getProperty("admin");
 
-if (user.telegramid != OWNER_ID){
+if (user.telegramid != admin){
   return Bot.sendMessage("Only admin allowed.");
 }
 

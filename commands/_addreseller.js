@@ -25,70 +25,81 @@ let admin = Bot.getProperty("admin");
 
 if(user.telegramid != admin){
 
-Bot.sendMessage("❌ Only admin can add reseller.");
+Bot.sendMessage("❌ Only admin allowed.");
 return;
 
 }
 
-// check format
-
+// usage check
 let args = message.split(" ");
 
 if(args.length < 2){
 
 Bot.sendMessage(
-"Usage:\n\n/addreseller USERID"
+"Usage:\n\n/addreseller USERID USERID"
 );
 
 return;
 
 }
 
-let newReseller = args[1];
+// all reseller ids
+let ids = args.slice(1).map(String);
 
-// load team list
+// save temp ids
+Bot.setProperty(
+"reseller_add_targets",
+ids,
+"json"
+);
 
-let team = Bot.getProperty("team_list") || [];
-
-// check duplicate
-
-if(team.includes(String(newReseller))){
-
-Bot.sendMessage("⚠️ User already reseller.");
-return;
-
-}
-
-// add reseller
-
-team.push(String(newReseller));
-
-Bot.setProperty("team_list", team, "json");
-
-// create reseller grid
-
-let grid = Bot.getProperty(newReseller + "_grid");
-
-if(!grid){
-
-Bot.setProperty(newReseller + "_grid", {}, "json");
-
-}
-
-// notify reseller user
-
+// send full grid
 Api.sendMessage({
-chat_id: newReseller,
+parse_mode:"HTML",
 text:
-"🎉 Congratulations!\n\n" +
-"You have been added as a Reseller.\n" +
-"Please contact admin to get your pricing details."
+
+"📄 <b>Send Full Reseller Price Grid</b>\n\n" +
+
+"Replace XX with prices.\n\n" +
+
+"<code>" +
+
+// SNAKE
+
+"snake_8bp_3=XX\n" +
+"snake_8bp_10=XX\n" +
+"snake_8bp_30=XX\n" +
+"snake_8bp_90=XX\n\n" +
+
+"snake_carrom_3=XX\n" +
+"snake_carrom_10=XX\n" +
+"snake_carrom_30=XX\n" +
+"snake_carrom_90=XX\n\n" +
+
+"snake_soccer_3=XX\n" +
+"snake_soccer_10=XX\n" +
+"snake_soccer_30=XX\n" +
+"snake_soccer_90=XX\n\n" +
+
+// KOS
+
+"kos_8bp_1=XX\n" +
+"kos_8bp_7=XX\n" +
+"kos_8bp_15=XX\n" +
+"kos_8bp_30=XX\n\n" +
+
+"kos_carrom_1=XX\n" +
+"kos_carrom_7=XX\n" +
+"kos_carrom_15=XX\n" +
+"kos_carrom_30=XX\n\n" +
+
+"kos_freefire_1=XX\n" +
+"kos_freefire_7=XX\n" +
+"kos_freefire_15=XX\n" +
+"kos_freefire_30=XX" +
+
+"</code>"
 });
 
-// notify admin
-
-Bot.sendMessage(
-"✅ Reseller added successfully.\n\nUser ID: " +
-newReseller +
-"\n\nNow set reseller pricing using:\n/setresellerprice"
-);
+// wait for reply
+Bot.runCommand("resellerGridInput");

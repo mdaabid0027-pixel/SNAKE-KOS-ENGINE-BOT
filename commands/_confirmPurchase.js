@@ -4,10 +4,7 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
+  answer: old wala only snake 
 
   <<KEYBOARD
 
@@ -114,6 +111,36 @@ Api.sendMessage({
         "🔑 <b>Key:</b> <code>" + deliveredKey + "</code>",
   parse_mode: "HTML"
 });
+
+// --------------------------------------------
+// 📡 LOG CHANNEL NOTIFICATION
+// --------------------------------------------
+
+let logChannel = Bot.getProperty("log_channel");
+
+if(logChannel){
+
+Api.sendMessage({
+chat_id: logChannel,
+parse_mode: "HTML",
+text:
+"📦 <b>NEW KEY SOLD</b>\n\n" +
+
+"👤 <b>User:</b> @" + (user.username || "NoUsername") + "\n" +
+"🆔 <code>" + user.telegramid + "</code>\n\n" +
+
+"🎮 <b>Game:</b> " + game + "\n" +
+"⏳ <b>Duration:</b> " + durationStr + " Days\n\n" +
+
+"💰 <b>Price:</b> ₹" + finalPrice + "\n" +
+"💳 <b>Balance Left:</b> ₹" + newBalance.toFixed(2) + "\n\n" +
+
+"🔑 <b>Delivered Key:</b>\n<code>" + deliveredKey + "</code>\n\n" +
+
+"📦 <b>Remaining Stock:</b> " + stock.length
+});
+
+}
 
 // --------------------------------------------
 // 🚀 FINAL REDIRECT

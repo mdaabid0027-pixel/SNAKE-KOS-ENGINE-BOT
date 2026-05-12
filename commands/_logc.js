@@ -16,4 +16,4 @@
   group: 
 CMD*/
 
-Bot.setProperty("log_channel", -1003332547125, "integer")
+Bot.setProperty("log_channel", -1003960703836, "integer")

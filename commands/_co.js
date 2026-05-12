@@ -66,7 +66,7 @@ Bot.getProperty("snake_" + game + "_" + duration + "_price")
 
 }
 
-// price missing
+// ❌ PRICE NOT CONFIGURED ALERT (ADMIN NOTIFY ADDED)
 if(price <= 0){
 
 Bot.sendMessage(
@@ -74,6 +74,21 @@ Bot.sendMessage(
 "\nGame: " + game.toUpperCase() +
 "\nDuration: " + duration + " Days"
 );
+
+if(admin){
+
+Api.sendMessage({
+chat_id: admin,
+text:
+"🚨 PRICE NOT CONFIGURED ALERT\n\n" +
+"👤 User: @" + (user.username || "NoUsername") +
+"\n🆔 ID: " + uid +
+"\n🎮 Game: " + game.toUpperCase() +
+"\n⏳ Duration: " + duration +
+"\n📦 Engine: Snake Engine"
+});
+
+}
 
 return;
 
@@ -186,12 +201,41 @@ Api.sendMessage({
 chat_id: logChannel,
 parse_mode:"HTML",
 text:
-"📡 <b>KEY SOLD</b>\n\n" +
-"👤 @" + (user.username || "NoUsername") +
-"\n🎮 Game: " + game.toUpperCase() +
-"\n⏳ Duration: " + duration +
-"\n🔢 Qty: " + qty +
-"\n💰 Price: ₹" + totalPrice
+"📡 <b>SNAKE ENGINE SOLD</b>\n\n" +
+
+"👤 <b>User:</b> @" + (user.username || "NoUsername") +
+"\n🆔 <code>" + uid + "</code>" +
+
+"\n\n🎮 <b>Game:</b> " + game.toUpperCase() +
+"\n⏳ <b>Duration:</b> " + duration + " Days" +
+
+"\n🔢 <b>Quantity:</b> " + qty +
+
+"\n💰 <b>Total Paid:</b> ₹" + totalPrice +
+
+"\n💳 <b>Balance Left:</b> ₹" + newBalance +
+
+"\n📦 <b>Remaining Stock:</b> " + stock.length +
+
+"\n👑 <b>Role:</b> " + (isReseller ? "Reseller" : "User") +
+
+"\n\n🔑 <b>Keys:</b>\n<code>" +
+delivered.join("\n") +
+"</code>",
+
+reply_markup:{
+inline_keyboard:[
+
+[
+{
+text:"🤖 Open Bot",
+url:"https://t.me/TechnoAabid_storebot"
+}
+]
+
+]
+}
+
 });
 
 }

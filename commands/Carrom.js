@@ -20,6 +20,5 @@ CMD*/
 command: Carrom
 */
 
-Bot.setProperty(user.telegramid + "_selected_game", "Carrom", "string");
-
-Bot.runCommand("confirmPurchase");
+Bot.setProperty(user.telegramid + "_selected_game", "carrom", "string");
+Bot.runCommand("selectDurationMenu");

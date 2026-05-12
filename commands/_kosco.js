@@ -62,6 +62,8 @@ Bot.getProperty("kos_" + game + "_" + duration + "_price")
 
 }
 
+// ❌ PRICE NOT CONFIGURED ALERT (ADMIN NOTIFY ADDED)
+
 if(price <= 0){
 
 Bot.sendMessage(
@@ -69,6 +71,21 @@ Bot.sendMessage(
 "\nGame: " + game.toUpperCase() +
 "\nDuration: " + duration + " Days"
 );
+
+if(admin){
+
+Api.sendMessage({
+chat_id: admin,
+text:
+"🚨 PRICE NOT CONFIGURED ALERT\n\n" +
+"👤 User: @" + (user.username || "NoUsername") +
+"\n🆔 ID: " + uid +
+"\n🎮 Game: " + game.toUpperCase() +
+"\n⏳ Duration: " + duration +
+"\n📦 Engine: Kos Engine"
+});
+
+}
 
 return;
 
@@ -105,6 +122,21 @@ qty +
 "\nAvailable: " +
 (stock ? stock.length : 0)
 );
+
+// admin notify stock issue
+if(admin){
+
+Api.sendMessage({
+chat_id: admin,
+text:
+"🚨 STOCK ALERT\n\nUser: @" +
+(user.username || "NoUsername") +
+"\nGame: " + game +
+"\nDuration: " + duration +
+"\nRequested: " + qty
+});
+
+}
 
 return;
 
@@ -169,11 +201,26 @@ chat_id: logChannel,
 parse_mode:"HTML",
 text:
 "📡 <b>KOS ENGINE SOLD</b>\n\n" +
-"👤 @" + (user.username || "NoUsername") +
-"\n🎮 Game: " + game.toUpperCase() +
-"\n⏳ Duration: " + duration +
-"\n🔢 Qty: " + qty +
-"\n💰 Price: ₹" + totalPrice
+
+"👤 <b>User:</b> @" + (user.username || "NoUsername") +
+"\n🆔 <code>" + uid + "</code>" +
+
+"\n\n🎮 <b>Game:</b> " + game.toUpperCase() +
+"\n⏳ <b>Duration:</b> " + duration + " Days" +
+
+"\n🔢 <b>Quantity:</b> " + qty +
+
+"\n💰 <b>Total Paid:</b> ₹" + totalPrice +
+
+"\n💳 <b>Balance Left:</b> ₹" + newBalance +
+
+"\n📦 <b>Remaining Stock:</b> " + stock.length +
+
+"\n👑 <b>Role:</b> " + (isReseller ? "Reseller" : "User") +
+
+"\n\n🔑 <b>Keys:</b>\n<code>" +
+delivered.join("\n") +
+"</code>"
 });
 
 }

@@ -32,9 +32,14 @@ Bot.sendMessage("❌ Invalid price");
 return;
 }
 
-let priceKey = engine + "_" + game + "_" + duration + "_price";
+
+// SAVE ONLY OLD FORMAT
+
+let priceKey =
+engine + "_" + game + "_" + duration + "_price";
 
 Bot.setProperty(priceKey, price, "integer");
+
 
 Bot.sendMessage(
 "✅ Price updated successfully\n\n" +
@@ -43,4 +48,3 @@ Bot.sendMessage(
 "\nDuration: " + duration +
 "\nPrice: ₹" + price
 );
-

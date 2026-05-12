@@ -31,7 +31,7 @@ Api.sendMessage({
         { text: "🎯 Carrom", callback_data: "/stockGame carrom" }
       ],
       [
-        { text: "⚽ Soccer", callback_data: "/stockGame soccer" }
+        { text: "🔥 Free Fire", callback_data: "/stockGame freefire" }
       ]
     ]
   }
