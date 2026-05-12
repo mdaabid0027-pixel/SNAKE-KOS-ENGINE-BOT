@@ -22,20 +22,21 @@ command: /purchaseNow
 
 let uid = user.telegramid.toString();
 
-// session protection
-let lastMsg =
-Bot.getProperty(uid + "_last_purchase_msg");
+// session verify
+let sid = params.trim();
 
-if(lastMsg && request.message.message_id != lastMsg){
+let currentSid =
+Bot.getProperty(uid + "_purchase_sid") || "";
 
-Bot.sendMessage(
-"⚠️ Session expired.\nPlease restart the bot."
-);
+if (sid != currentSid) {
 
-Bot.runCommand("/start");
+  Bot.sendMessage(
+    "⚠️ Session expired.\nPlease restart the bot."
+  );
 
-return;
+  Bot.runCommand("/start");
 
+  return;
 }
 
 let app = Bot.getProperty(uid + "_selected_app");
