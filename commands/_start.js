@@ -21,126 +21,101 @@ command: /start
 */
 
 // ==============================
-// ✅ NORMALIZE USER LIST
+// BASIC USER DATA
 // ==============================
 
 let uid = user.telegramid.toString();
-let list = Bot.getProperty("user_list") || [];
-list = list.map(String);
 
-let isNewUser = !list.includes(uid);
+let firstName = user.first_name || "NoName";
+let lastName = user.last_name ? " " + user.last_name : "";
+let fullName = firstName + lastName;
+let username = user.username || "NoUsername";
 
-// ==============================
-// 👤 SAVE USER DATA
-// ==============================
-
-Bot.setProperty(
-  uid + "_username",
-  user.username || "NoUsername",
-  "string"
-);
-
-Bot.setProperty(
-  uid + "_name",
-  user.first_name + (user.last_name ? " " + user.last_name : ""),
-  "string"
-);
+Bot.setProperty(uid + "_username", username, "string");
+Bot.setProperty(uid + "_name", fullName, "string");
 
 // ==============================
-// 🆕 ADMIN NOTIFY ONLY FOR NEW USER
+// BOT ID SYSTEM (UNIQUE)
 // ==============================
 
-let admin = Bot.getProperty("admin");
+let botId = Bot.getProperty(uid + "_botid");
 
-if (isNewUser) {
+if (!botId) {
+  let nextBotId = Bot.getProperty("next_botid");
 
-  list.push(uid);
-  Bot.setProperty("user_list", list, "json");
-
-  let userNumber = list.length;
-
-  if (admin) {
-    Api.sendMessage({
-      chat_id: admin,
-      parse_mode: "HTML",
-      text:
-        "🆕 <b>New User Joined Bot</b>\n\n" +
-        "👤 Name: " + (user.first_name || "NoName") +
-        "\n📛 Username: @" + (user.username || "NoUsername") +
-        "\n🆔 ID: <code>" + uid + "</code>" +
-        "\n\n📊 <b>User Number:</b> #" + userNumber +
-        "\n👥 <b>Total Users:</b> " + userNumber
-    });
+  if (!nextBotId) {
+    nextBotId = 100;
   }
 
+  nextBotId = parseInt(nextBotId) + 1;
+  botId = nextBotId;
+
+  Bot.setProperty("next_botid", nextBotId, "integer");
+  Bot.setProperty(uid + "_botid", botId, "integer");
+  Bot.setProperty("botid_" + botId, uid, "string");
 }
 
 // ==============================
-// 👑 CHECK RESELLER
+// BALANCE
 // ==============================
 
-let teamList = Bot.getProperty("team_list") || [];
+let balance = Bot.getProperty(uid + "_balance");
+if (!balance) balance = 0;
+
+// ==============================
+// RESELLER CHECK
+// ==============================
+
+let teamList = Bot.getProperty("team_list");
+if (!Array.isArray(teamList)) teamList = [];
+
 let isReseller = teamList.map(String).includes(uid);
+let role = isReseller ? "Reseller" : "User";
 
 // ==============================
-// 📢 LOAD GLOBAL OFFER
+// TUTORIAL VIDEO
 // ==============================
 
-let offer = Bot.getProperty("global_offer");
-let offerText = "";
+let videoLink = Bot.getProperty("tutorial_video_link");
 
-if (offer) {
-  offerText =
-    "📢 <b>Special Offer</b>\n\n" +
-    offer +
-    "\n\n━━━━━━━━━━━━━━━━━━\n\n";
+if (videoLink) {
+  Api.sendMessage({
+    text: "🎥 How to use this bot:\n" + videoLink,
+    disable_web_page_preview: false
+  });
 }
 
 // ==============================
-// 📝 WELCOME MESSAGE
+// WELCOME MESSAGE
 // ==============================
 
 let msg = "";
 
 if (isReseller) {
   msg =
-    offerText +
     "👋 Welcome Reseller!\n\n" +
-    "Use the menu below to manage purchases, stock and balance.";
+    "👤 Name: " + fullName +
+    "\n🆔 Telegram ID: " + uid +
+    "\n🪪 Bot ID: #" + botId +
+    "\n👑 Role: " + role +
+    "\n💰 Balance: ₹" + balance +
+    "\n\nUse the menu below to manage purchases, stock and balance.";
 } else {
   msg =
-    offerText +
     "👋 Welcome!\n\n" +
-    "Use the menu below to purchase keys and manage your account.";
+    "👤 Name: " + fullName +
+    "\n🆔 Telegram ID: " + uid +
+    "\n🪪 Bot ID: #" + botId +
+    "\n👑 Role: " + role +
+    "\n💰 Balance: ₹" + balance +
+    "\n\nUse the menu below to purchase keys and manage your account.";
 }
 
 // ==============================
-// ✅ MAIN MENU
+// MAIN MENU
 // ==============================
 
-Api.sendMessage({
-  text: msg,
-  parse_mode: "HTML",
-  reply_markup: {
-    keyboard: [
-
-      [
-        { text: "🛒 Purchase Product" }
-      ],
-
-      [
-        { text: "💳 Check Balance" },
-        { text: "➕ Add Balance" }
-      ],
-
-      [
-        { text: "📦 Check Stock" },
-        { text: "🧾 Purchase History" }
-      ]
-
-    ],
-
-    resize_keyboard: true,
-    is_persistent: true
-  }
-});
+Bot.sendKeyboard(
+  "🛒 Purchase Product\n💳 Check Balance,➕ Add Balance\n📦 Check Stock,🧾 Purchase History",
+  msg
+);
