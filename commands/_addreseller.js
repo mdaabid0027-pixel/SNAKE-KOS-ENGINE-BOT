@@ -53,15 +53,31 @@ ids,
 "json"
 );
 
+// auto add into team list
+let team = Bot.getProperty("team_list") || [];
+team = team.map(String);
+
+for(let id of ids){
+
+if(!team.includes(id)){
+team.push(id);
+}
+
+}
+
+Bot.setProperty(
+"team_list",
+team,
+"json"
+);
+
 // send full grid
 Api.sendMessage({
 parse_mode:"HTML",
 text:
 
 "📄 <b>Send Full Reseller Price Grid</b>\n\n" +
-
 "Replace XX with prices.\n\n" +
-
 "<code>" +
 
 // SNAKE
