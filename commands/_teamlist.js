@@ -16,11 +16,6 @@
   group: 
 CMD*/
 
-/*CMD
-  command: /teamlist
-  folder: Admin Panel
-CMD*/
-
 let admin = Bot.getProperty("admin");
 
 if (user.telegramid != admin) {

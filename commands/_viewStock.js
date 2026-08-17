@@ -30,22 +30,33 @@ if (user.telegramid != admin) {
   });
 }
 
-// Helper function
+
+// ================= HELPER =================
+
 function getStock(key) {
+
   let arr = Bot.getProperty(key);
 
   if (!arr || !Array.isArray(arr) || arr.length === 0) {
-    return { count: 0, list: "— No stock —" };
+    return {
+      count: 0,
+      list: "— No stock —"
+    };
   }
 
   let formatted = arr
     .map((c, i) => (i + 1) + ". " + c)
     .join("\n");
 
-  return { count: arr.length, list: formatted };
+  return {
+    count: arr.length,
+    list: formatted
+  };
 }
 
+
 // ================= SNAKE ENGINE =================
+
 // 8BP
 let s8_3  = getStock("snake_8bp_3_stock");
 let s8_10 = getStock("snake_8bp_10_stock");
@@ -64,7 +75,9 @@ let ss_10 = getStock("snake_soccer_10_stock");
 let ss_30 = getStock("snake_soccer_30_stock");
 let ss_90 = getStock("snake_soccer_90_stock");
 
+
 // ================= KOS ENGINE =================
+
 // 8BP
 let k8_1  = getStock("kos_8bp_1_stock");
 let k8_7  = getStock("kos_8bp_7_stock");
@@ -77,17 +90,28 @@ let kc_7  = getStock("kos_carrom_7_stock");
 let kc_15 = getStock("kos_carrom_15_stock");
 let kc_30 = getStock("kos_carrom_30_stock");
 
-// Free Fire
-let kf_1  = getStock("kos_freefire_1_stock");
-let kf_7  = getStock("kos_freefire_7_stock");
-let kf_15 = getStock("kos_freefire_15_stock");
-let kf_30 = getStock("kos_freefire_30_stock");
 
-// Final Message
+// ================= AIMAI =================
+
+// Carrom
+let a_1  = getStock("aimai_carrom_1_stock");
+let a_3  = getStock("aimai_carrom_3_stock");
+let a_7  = getStock("aimai_carrom_7_stock");
+let a_15 = getStock("aimai_carrom_15_stock");
+let a_30 = getStock("aimai_carrom_30_stock");
+let a_90 = getStock("aimai_carrom_90_stock");
+
+
+// ================= FINAL MESSAGE =================
+
 let msg =
 "<b>📦 FULL STOCK LIST</b>\n\n" +
 
-"<b>🐍 Snake Engine</b>\n" +
+
+// ================= SNAKE =================
+
+"<b>🐍 Snake Engine</b>\n\n" +
+
 "<b>🎮 8BP</b>\n" +
 "3D (" + s8_3.count + ")\n" + s8_3.list + "\n\n" +
 "10D (" + s8_10.count + ")\n" + s8_10.list + "\n\n" +
@@ -106,7 +130,11 @@ let msg =
 "30D (" + ss_30.count + ")\n" + ss_30.list + "\n\n" +
 "90D (" + ss_90.count + ")\n" + ss_90.list + "\n\n" +
 
-"<b>🚀 Kos Engine</b>\n" +
+
+// ================= KOS =================
+
+"<b>🚀 Kos Engine</b>\n\n" +
+
 "<b>🎮 8BP</b>\n" +
 "1D (" + k8_1.count + ")\n" + k8_1.list + "\n\n" +
 "7D (" + k8_7.count + ")\n" + k8_7.list + "\n\n" +
@@ -119,11 +147,19 @@ let msg =
 "15D (" + kc_15.count + ")\n" + kc_15.list + "\n\n" +
 "30D (" + kc_30.count + ")\n" + kc_30.list + "\n\n" +
 
-"<b>🎮 Free Fire</b>\n" +
-"1D (" + kf_1.count + ")\n" + kf_1.list + "\n\n" +
-"7D (" + kf_7.count + ")\n" + kf_7.list + "\n\n" +
-"15D (" + kf_15.count + ")\n" + kf_15.list + "\n\n" +
-"30D (" + kf_30.count + ")\n" + kf_30.list;
+
+// ================= AIMAI =================
+
+"<b>🤖 AimAI</b>\n\n" +
+
+"<b>🎮 Carrom</b>\n" +
+"1D (" + a_1.count + ")\n" + a_1.list + "\n\n" +
+"3D (" + a_3.count + ")\n" + a_3.list + "\n\n" +
+"7D (" + a_7.count + ")\n" + a_7.list + "\n\n" +
+"15D (" + a_15.count + ")\n" + a_15.list + "\n\n" +
+"30D (" + a_30.count + ")\n" + a_30.list + "\n\n" +
+"90D (" + a_90.count + ")\n" + a_90.list;
+
 
 Api.sendMessage({
   text: msg,

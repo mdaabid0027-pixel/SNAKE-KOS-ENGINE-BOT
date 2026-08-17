@@ -23,10 +23,7 @@
 /setoffer
 /setsnakelink
   ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

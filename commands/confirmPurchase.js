@@ -72,10 +72,64 @@ let stock = Bot.getProperty(baseKey + "_stock") || [];
 let stockCount = Array.isArray(stock) ? stock.length : 0;
 
 // app name
-let appName = (app == "snake") ? "Snake Engine" : "Kos Engine";
+let appName;
+
+if (app == "snake") {
+  appName = "Snake Engine";
+} else if (app == "kos") {
+  appName = "Kos Engine";
+} else if (app == "aimai") {
+  appName = "AimAI";
+} else {
+  appName = app;
+}
 
 // reseller flow
 if (isReseller) {
+
+  let displayStock = stockCount;
+
+  if (displayStock <= 0) {
+    displayStock = 1;
+  }
+
+  let keyboard = [];
+
+  for (let i = 1; i <= Math.min(displayStock, 10); i += 2) {
+
+    let row = [
+      {
+        text: i + " Key" + (i > 1 ? "s" : ""),
+        callback_data: "/buyqty " + i + " " + sid
+      }
+    ];
+
+    if (i + 1 <= Math.min(displayStock, 10)) {
+      row.push({
+        text: (i + 1) + " Keys",
+        callback_data: "/buyqty " + (i + 1) + " " + sid
+      });
+    }
+
+    keyboard.push(row);
+  }
+
+  if (displayStock >= 20) {
+    keyboard.push([
+      {
+        text: "20 Keys",
+        callback_data: "/buyqty 20 " + sid
+      }
+    ]);
+  }
+
+  keyboard.push([
+    {
+      text: "❌ Cancel",
+      callback_data: "/cancelPurchase " + sid
+    }
+  ]);
+
   Api.sendMessage({
     parse_mode: "HTML",
     text:
@@ -88,21 +142,10 @@ if (isReseller) {
       "\n👤 Role: Reseller" +
       "\n\nSelect quantity:",
     reply_markup: {
-      inline_keyboard: [
-        [
-          { text: "1 Key", callback_data: "/buyqty 1 " + sid },
-          { text: "2 Keys", callback_data: "/buyqty 2 " + sid }
-        ],
-        [
-          { text: "5 Keys", callback_data: "/buyqty 5 " + sid },
-          { text: "10 Keys", callback_data: "/buyqty 10 " + sid }
-        ],
-        [
-          { text: "❌ Cancel", callback_data: "/cancelPurchase " + sid }
-        ]
-      ]
+      inline_keyboard: keyboard
     }
   });
+
 } else {
   Api.sendMessage({
     parse_mode: "HTML",
@@ -118,8 +161,8 @@ if (isReseller) {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "✅ Yes", callback_data: "/purchaseNow " + sid },
-          { text: "❌ No", callback_data: "/cancelPurchase " + sid }
+          { text: "✅ Yes", style: "primary", callback_data: "/purchaseNow " + sid },
+          { text: "❌ No", style: "danger", callback_data: "/cancelPurchase " + sid }
         ]
       ]
     }

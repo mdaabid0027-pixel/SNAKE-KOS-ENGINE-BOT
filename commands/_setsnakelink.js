@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: Snake Engine link
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

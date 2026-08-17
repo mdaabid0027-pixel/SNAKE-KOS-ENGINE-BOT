@@ -16,4 +16,4 @@
   group: 
 CMD*/
 
-Bot.sendMessage(Bot.getProperty("log_channel"))
+Bot.getProperty("log_channel"))

@@ -57,6 +57,82 @@ if (res.status == "success") {
     let newBalance = currentBalance + amount;
 
     Bot.setProperty(key, newBalance, "float");
+    // ===== PAYMENT STATS =====
+
+    // User Lifetime Deposit
+    let userTotal =
+    Bot.getProperty(user.telegramid + "_total_deposit") || 0;
+
+    userTotal += amount;
+
+    Bot.setProperty(
+        user.telegramid + "_total_deposit",
+        userTotal,
+        "float"
+    );
+
+    // Global Lifetime Deposit
+    let total =
+    Bot.getProperty("total_deposit") || 0;
+
+    total += amount;
+
+    Bot.setProperty(
+        "total_deposit",
+        total,
+        "float"
+    );
+
+    // Yearly Deposit
+    let year =
+    new Date().getFullYear();
+
+    let yearly =
+    Bot.getProperty("deposit_year_" + year) || 0;
+
+    yearly += amount;
+
+    Bot.setProperty(
+        "deposit_year_" + year,
+        yearly,
+        "float"
+    );
+
+    // Monthly Deposit
+    let month =
+    ("0" + (new Date().getMonth() + 1)).slice(-2);
+
+    let monthKey =
+    year + "_" + month;
+
+    let monthly =
+    Bot.getProperty("deposit_month_" + monthKey) || 0;
+
+    monthly += amount;
+
+    Bot.setProperty(
+        "deposit_month_" + monthKey,
+        monthly,
+        "float"
+    );
+
+    // Weekly Deposit
+    let week =
+    Math.ceil(new Date().getDate() / 7);
+
+    let weekKey =
+    year + "_" + month + "_W" + week;
+
+    let weekly =
+    Bot.getProperty("deposit_week_" + weekKey) || 0;
+
+    weekly += amount;
+
+    Bot.setProperty(
+        "deposit_week_" + weekKey,
+        weekly,
+        "float"
+    );
 
 
     // ===== USER SUCCESS MESSAGE =====

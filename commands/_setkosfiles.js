@@ -9,10 +9,7 @@
 Send Kos Engine APK file to set
 /getfiles
   ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

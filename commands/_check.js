@@ -24,6 +24,6 @@ if (!order_id) {
 }
 
 HTTP.get({
-  url: "https://fampay.anujbots.xyz/verify.php?order_id=" + order_id + "&api_key=FAM_44a1094e0368452f70b1a84a333e83af5bab691333bb32d7", //get api key from @FamPayApiKeyBot
+  url: "https://fampay.anujbots.xyz/verify.php?order_id=" + order_id + "&api_key=FAM_4f28ec6ed18bf09c67027c9ca3a7bbfbf26039e598873403", //get api key from @FamPayApiKeyBot
   success: "/oncheck"
 })

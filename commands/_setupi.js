@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: Send Your Upi Id
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

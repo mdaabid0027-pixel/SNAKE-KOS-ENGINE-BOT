@@ -4,14 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: 
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -25,13 +19,4 @@ CMD*/
   answer: 
   keyboard: 
   aliases: 
-  group: 
-CMD*/
-
-Bot.setProperty("price_edit_target", "carom_30day_price", "string");
-
-Api.sendMessage({
-  text: "💲 Enter new <b>User Price</b> for <b>Carrom – 30 Days</b>:",
-  parse_mode: "HTML"
-});
-Bot.runCommand("/pricing")
+  group:

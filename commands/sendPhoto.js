@@ -76,4 +76,4 @@ Bot.sendMessage(
 );
 
 // redirect
-Bot.runCommand("/startt");
+Bot.runCommand("/start");

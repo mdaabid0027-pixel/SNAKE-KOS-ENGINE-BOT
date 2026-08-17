@@ -1,5 +1,5 @@
 /*CMD
-  command: saveGlobalResellerGridbb
+  command: saveGlobalResellerGrid
   help: 
   need_reply: true
   auto_retry_time: 

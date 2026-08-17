@@ -33,7 +33,7 @@ let durations = ["1", "7", "15", "30"];
 let msg = "🚀 Kos Engine Stock:\n\n";
 
 // games (Soccer removed, Free Fire added)
-let games = ["8bp", "carrom", "freefire"];
+let games = ["8bp", "carrom"];
 
 for (let g of games) {
 

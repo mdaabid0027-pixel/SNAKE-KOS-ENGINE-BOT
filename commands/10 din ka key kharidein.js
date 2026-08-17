@@ -4,14 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: 
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -25,19 +19,4 @@ CMD*/
   answer: 
   keyboard: 
   aliases: 
-  group: 
-CMD*/
-
-Bot.setProperty(user.telegramid + "_selected_duration", 10, "integer");
-
-Api.sendMessage({
-  text: "🎮 Kripya game chunen:",
-  reply_markup: {
-    keyboard: [
-      [{ text: "8BP" }], [{ text: "Carom" }], [{ text: "Soccer" }]
-    ],
-    resize_keyboard: true
-  }
-});
-Bot.runCommand("/play")
-
+  group:

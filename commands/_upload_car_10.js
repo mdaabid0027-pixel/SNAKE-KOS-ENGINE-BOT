@@ -4,14 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: 
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -25,13 +19,4 @@ CMD*/
   answer: 
   keyboard: 
   aliases: 
-  group: 
-CMD*/
-
-Bot.setProperty("upload_stock_target", "carom_10day_stock", "string");
-
-Api.sendMessage({
-  text: "📝 Send the coupon codes *one per line*.\n\nExample:\nCODE123\nCODE456\nCODE789",
-  parse_mode: "Markdown"
-});
-Bot.runCommand("/uploading")
+  group:

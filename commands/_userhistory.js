@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: /userhistory userid
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

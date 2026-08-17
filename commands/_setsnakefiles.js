@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: Snake Engine APK Send For set
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

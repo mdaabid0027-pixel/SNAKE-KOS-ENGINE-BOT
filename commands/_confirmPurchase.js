@@ -4,11 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-  answer: old wala only snake 
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: old wala only snake
+  keyboard: 
   aliases: 
   group: 
 CMD*/

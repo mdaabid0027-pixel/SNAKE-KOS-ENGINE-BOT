@@ -4,7 +4,7 @@
   need_reply: true
   auto_retry_time: 
   folder: 
-  answer: Send Massege Image, Video ,apk and text Massge if you want .. 
+  answer: Send Massege Image, Video ,apk and text Massge if you want ..
 
   <<KEYBOARD
 

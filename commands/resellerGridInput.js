@@ -107,14 +107,6 @@ parsedGrid,
 "json"
 );
 
-// notify reseller
-Api.sendMessage({
-chat_id: uid,
-text:
-"🎉 You are now added as a Reseller.\n\n" +
-"Custom reseller pricing applied."
-});
-
 }
 
 // save reseller list
@@ -124,14 +116,15 @@ team,
 "json"
 );
 
+// clear temp
+Bot.setProperty(
+"reseller_add_targets",
+[],
+"json"
+);
+
 // success
 Bot.sendMessage(
 "✅ Reseller pricing applied successfully.\n\n" +
 "👥 Total Updated: " + ids.length
-);
-
-// clear temp
-Bot.setProperty(
-"reseller_add_targets",
-null
 );

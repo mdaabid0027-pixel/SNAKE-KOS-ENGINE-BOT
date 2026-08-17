@@ -51,7 +51,7 @@ Api.sendMessage({
         { text: "📂 All Proof Channel", url: "https://t.me/Aabid_proofs" }
       ],
       [
-        { text: "🐍 Snake Engine Deal Proof", url: "https://t.me/Snakeengine_india_Proof" }
+        { text: "🤖 Bot Deal Proof", url: "https://t.me/Auto_Aabid_Proof" }
       ]
     ]
   }

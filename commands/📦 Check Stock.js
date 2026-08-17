@@ -27,14 +27,14 @@ Api.sendMessage({
 
       [
         {
-          text: "🐍 Snake Engine Stock",
+          text: "🐍 Snake Engine Stock", style: "primary",
           callback_data: "🐍 Snake Engine Stock"
         }
       ],
 
       [
         {
-          text: "🚀 Kos Engine Stock",
+          text: "🚀 Kos Engine Stock", style: "danger",
           callback_data: "🚀 Kos Engine Stock"
         }
       ]

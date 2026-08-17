@@ -22,51 +22,85 @@ need_reply: false
 */
 
 let admin = Bot.getProperty("admin");
-if (user.telegramid != admin) {
-  return Bot.sendMessage("Only admin allowed.");
+
+if(user.telegramid != admin){
+
+return Bot.sendMessage(
+"❌ Only admin allowed."
+);
+
 }
 
-let msg_id = Bot.getProperty("broadcast_msg_id");
-let chat_id = Bot.getProperty("broadcast_chat_id");
+let msgId =
+Bot.getProperty("broadcast_msg_id");
 
-if (!msg_id || !chat_id) {
-  return Bot.sendMessage("Pehle /setbroadcast karo!");
+let chatId =
+Bot.getProperty("broadcast_chat_id");
+
+if(!msgId || !chatId){
+
+return Bot.sendMessage(
+"❌ Pahle /setbroadcast karo!"
+);
+
 }
 
-// ==============================
-// LOAD ALL USER LIST CHUNKS
-// user_list, user_list_2, user_list_3...
-// ==============================
+// total users count
 
-let allUsers = [];
+let total = 0;
 
-for (let i = 1; i <= 100; i++) {
-  let key = (i === 1) ? "user_list" : "user_list_" + i;
-  let list = Bot.getProperty(key);
+for(let i = 1; i <= 100; i++){
 
-  if (Array.isArray(list) && list.length > 0) {
-    allUsers = allUsers.concat(list.map(String));
-  }
+let key =
+(i === 1)
+? "user_list"
+: "user_list_" + i;
+
+let list =
+Bot.getProperty(key);
+
+if(Array.isArray(list)){
+
+total += list.length;
+
 }
 
-// remove duplicates
-allUsers = [...new Set(allUsers)];
-
-if (allUsers.length === 0) {
-  return Bot.sendMessage("No users found.");
 }
 
-let count = 0;
+if(total === 0){
 
-for (let i = 0; i < allUsers.length; i++) {
-  Api.forwardMessage({
-    chat_id: allUsers[i],
-    from_chat_id: chat_id,
-    message_id: msg_id
-  });
-  count++;
+return Bot.sendMessage(
+"❌ No users found."
+);
+
 }
+
+// start broadcast
+
+Bot.setProperty(
+"broadcast_list_no",
+1,
+"integer"
+);
+
+Bot.setProperty(
+"broadcast_index",
+0,
+"integer"
+);
+
+Bot.setProperty(
+"broadcast_total",
+total,
+"integer"
+);
 
 Bot.sendMessage(
-  "✅ Broadcast Complete!\n📤 Sent to: " + count + "/" + allUsers.length + " users!"
+"📤 Broadcast Started\n\n" +
+"👥 Total Users: " + total
 );
+
+Bot.run({
+command: "/broadcastWorker",
+run_after: 1
+});
