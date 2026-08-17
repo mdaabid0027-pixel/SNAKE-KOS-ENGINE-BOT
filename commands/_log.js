@@ -16,7 +16,7 @@
   group: 
 CMD*/
 
-let logChannel = -1003960703836
+let logChannel = -1003332547125
 
 let text = params
 

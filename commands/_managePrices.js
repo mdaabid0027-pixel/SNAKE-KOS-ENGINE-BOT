@@ -25,10 +25,22 @@ Api.sendMessage({
   reply_markup: {
     inline_keyboard: [
       [
-        { text: "🐍 Snake Engine", callback_data: "/priceSnakeEngine" }
+        {
+          text: "🐍 Snake Engine",
+          callback_data: "/priceSnakeEngine"
+        }
       ],
       [
-        { text: "🚀 Kos Engine", callback_data: "/priceKosEngine" }
+        {
+          text: "🚀 Kos Engine",
+          callback_data: "/priceKosEngine"
+        }
+      ],
+      [
+        {
+          text: "🤖 AimAI",
+          callback_data: "/priceAimAI"
+        }
       ]
     ]
   }

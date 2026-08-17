@@ -27,24 +27,56 @@ let duration = User.getProperty("price_duration");
 
 let price = parseFloat(message);
 
-if(isNaN(price)){
-Bot.sendMessage("❌ Invalid price");
-return;
+if(isNaN(price) || price < 0){
+
+  Bot.sendMessage("❌ Invalid price");
+  return;
+
 }
 
 
-// SAVE ONLY OLD FORMAT
+// PRICE KEY
 
 let priceKey =
-engine + "_" + game + "_" + duration + "_price";
+  engine + "_" +
+  game + "_" +
+  duration +
+  "_price";
 
-Bot.setProperty(priceKey, price, "integer");
 
+// SAVE PRICE
+
+Bot.setProperty(
+  priceKey,
+  price,
+  "integer"
+);
+
+
+// ENGINE NAME
+
+let engineName;
+
+if(engine == "snake"){
+  engineName = "Snake Engine";
+}
+else if(engine == "kos"){
+  engineName = "Kos Engine";
+}
+else if(engine == "aimai"){
+  engineName = "AimAI";
+}
+else{
+  engineName = engine;
+}
+
+
+// SUCCESS
 
 Bot.sendMessage(
-"✅ Price updated successfully\n\n" +
-"Engine: " + engine +
-"\nGame: " + game +
-"\nDuration: " + duration +
-"\nPrice: ₹" + price
+  "✅ Price Updated Successfully\n\n" +
+  "📦 Engine: " + engineName +
+  "\n🎮 Game: " + game.toUpperCase() +
+  "\n⏳ Duration: " + duration + " Days" +
+  "\n💰 Price: ₹" + price
 );

@@ -1,10 +1,13 @@
 /*CMD
   command: /broadcast
   help: 
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
-  answer: Send broadcast message
+
+  <<ANSWER
+
+  ANSWER
 
   <<KEYBOARD
 
@@ -15,33 +18,54 @@ CMD*/
 
 /*CMD
 command: /broadcast
-need_reply: true
+need_reply: false
 */
 
-let admin = Bot.getProperty("admin");
+let admin =
+Bot.getProperty("admin");
 
-if (user.telegramid != admin){
-  return Bot.sendMessage("Only admin allowed.");
+if(user.telegramid != admin){
+
+return Bot.sendMessage(
+"Only admin allowed."
+);
+
 }
 
-let text = message;
-let users = Bot.getProperty("user_list") || [];
+let text =
+message.replace("/broadcast","").trim();
 
-if (users.length == 0){
-  return Bot.sendMessage("No users found.");
+if(!text){
+
+return Bot.sendMessage(
+"Usage:\n/broadcast hello"
+);
+
 }
 
-let sent = 0;
+let total =
+Bot.getProperty("next_botid");
 
-for (var i = 0; i < users.length; i++){
+Bot.setProperty(
+"broadcast_text",
+text,
+"string"
+);
 
-  Api.sendMessage({
-    chat_id: users[i],
-    text: text,
-    on_error: "/broadcastError"
-  });
+Bot.setProperty(
+"broadcast_botid",
+1,
+"integer"
+);
 
-  sent++;
-}
+Bot.sendMessage(
+"📤 Broadcast Started\n\n" +
+"👥 Total Users: " + total
+);
 
-Bot.sendMessage("✅ Broadcast Sent To " + sent + " Users.");
+Bot.run({
+command:
+"/broadcastWorker",
+
+run_after: 1
+});

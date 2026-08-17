@@ -11,10 +11,7 @@ KEY1
 KEY2
 KEY3
   ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

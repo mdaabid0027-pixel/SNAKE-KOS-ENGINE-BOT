@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: If you want to add a different amount then write the amount below, minimum you can add ₹21.
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

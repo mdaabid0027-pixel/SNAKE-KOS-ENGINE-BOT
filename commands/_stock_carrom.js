@@ -4,14 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: 
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -25,26 +19,4 @@ CMD*/
   answer: 
   keyboard: 
   aliases: 
-  group: 
-CMD*/
-
-let text = "📦 Upload Carrom Stock\nSelect duration:";
-let buttons = [
-  [
-    { text: "3 Days", callback_data: "/upload_car_3" }
-  ],
-  [
-    { text: "10 Days", callback_data: "/upload_car_10" }
-  ],
-  [
-    { text: "30 Days", callback_data: "/upload_car_30" }
-  ],
-  [
-    { text: "90 Days", callback_data: "/upload_car_90" }
-  ]
-];
-
-Api.sendMessage({
-  text: text,
-  reply_markup: { inline_keyboard: buttons }
-});
+  group:

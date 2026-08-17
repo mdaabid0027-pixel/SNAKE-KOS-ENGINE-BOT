@@ -16,12 +16,6 @@
   group: 
 CMD*/
 
-/*CMD
-  command: /setoffer
-  need_reply: true
-  folder: Admin Panel
-CMD*/
-
 let admin = Bot.getProperty("admin");
 
 if (user.telegramid != admin) {

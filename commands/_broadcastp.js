@@ -4,11 +4,8 @@
   need_reply: true
   auto_retry_time: 
   folder: 
-  answer: send 
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: send
+  keyboard: 
   aliases: 
   group: 
 CMD*/

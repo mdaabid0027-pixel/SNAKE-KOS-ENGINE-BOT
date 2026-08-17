@@ -111,10 +111,10 @@ if (balance < totalPrice) {
 let stockKey = baseKey + "_stock";
 
 let stock =
-Bot.getProperty(stockKey) || [];
+  Bot.getProperty(stockKey) || [];
 
 let stockCount =
-Array.isArray(stock) ? stock.length : 0;
+  Array.isArray(stock) ? stock.length : 0;
 
 if (stockCount < qty) {
 
@@ -125,22 +125,48 @@ if (stockCount < qty) {
   );
 
   let admin =
-  Bot.getProperty("admin");
+    Bot.getProperty("admin");
 
   if (admin) {
 
+    let alertAppName;
+
+    if (app == "snake") {
+      alertAppName = "Snake Engine";
+    } else if (app == "kos") {
+      alertAppName = "Kos Engine";
+    } else if (app == "aimai") {
+      alertAppName = "AimAI";
+    } else {
+      alertAppName = app;
+    }
+
     Api.sendMessage({
       chat_id: admin,
+      parse_mode: "HTML",
       text:
-        "🚨 STOCK ALERT\n\n" +
-        "👤 User: @" +
-        (user.username || "NoUsername") +
-        "\n🆔 ID: " + uid +
-        "\n🎮 Game: " +
+        "🚨 <b>STOCK ALERT</b>\n\n" +
+
+        "📦 <b>Engine:</b> " +
+        alertAppName +
+
+        "\n🎮 <b>Game:</b> " +
         game.toUpperCase() +
-        "\n⏳ Duration: " +
+
+        "\n⏳ <b>Duration:</b> " +
         duration + " Days" +
-        "\n🔢 Requested: " + qty
+
+        "\n👤 <b>User:</b> @" +
+        (user.username || "NoUsername") +
+
+        "\n🆔 <b>ID:</b> <code>" +
+        uid + "</code>" +
+
+        "\n🔢 <b>Requested:</b> " +
+        qty +
+
+        "\n📊 <b>Available:</b> " +
+        stockCount
     });
 
   }
@@ -183,33 +209,48 @@ Bot.setProperty(
 Api.sendMessage({
   parse_mode: "HTML",
   text:
-    "✅ <b>Purchase Done</b>\n\n" +
-    "📦 Product: " +
-    (app == "snake"
-      ? "Snake Engine"
-      : "Kos Engine") +
+    "╔════════════════════╗\n" +
+    "🎉 <b>PURCHASE SUCCESSFUL</b>\n" +
+    "╚════════════════════╝\n\n" +
 
-    "\n🎮 Game: " +
-    game.toUpperCase() +
+    "📦 <b>Product:</b> " +
+    (app == "snake" ? "Snake Engine" : "Kos Engine") +
 
-    "\n⏳ Duration: " +
-    duration + " Days" +
+    "\n🎮 <b>Game:</b> " + game.toUpperCase() +
 
-    "\n🔢 Quantity: " + qty +
+    "\n⏳ <b>Duration:</b> " + duration + " Days" +
 
-    "\n\n🔑 Keys:\n<code>" +
-    delivered.join("\n") +
+    "\n🛒 <b>Quantity:</b> " + qty +
 
-    "</code>\n\n💳 Remaining Balance: ₹" +
-    newBalance.toFixed(2)
+    "\n━━━━━━━━━━━━━━━━━━━━\n" +
+    "🔑 <b>Your License Key(s)</b>\n" +
+    "<code>" + delivered.join("\n") + "</code>" +
+
+    "\n━━━━━━━━━━━━━━━━━━━━\n" +
+    "💰 <b>Remaining Balance:</b> ₹" + newBalance.toFixed(2) +
+
+    "\n\n⚠️ <i>Please save your key(s). Lost keys cannot be recovered.</i>\n\n" +
+    "🙏 <b>Thank you for choosing Techno Aabid Store!</b>"
 });
 
 // admin notify
 
 let admin =
-Bot.getProperty("admin");
+  Bot.getProperty("admin");
 
 if (admin) {
+
+  let appName;
+
+  if (app == "snake") {
+    appName = "Snake Engine";
+  } else if (app == "kos") {
+    appName = "Kos Engine";
+  } else if (app == "aimai") {
+    appName = "AimAI";
+  } else {
+    appName = app;
+  }
 
   Api.sendMessage({
     chat_id: admin,
@@ -226,10 +267,13 @@ if (admin) {
       "\n🆔 ID: <code>" +
       uid + "</code>" +
 
-      "\n🎮 Game: " +
+      "\n📦 <b>Engine:</b> " +
+      appName +
+
+      "\n🎮 <b>Game:</b> " +
       game.toUpperCase() +
 
-      "\n⏳ Duration: " +
+      "\n⏳ <b>Duration:</b> " +
       duration + " Days" +
 
       "\n🔢 Qty: " + qty +
@@ -244,12 +288,25 @@ if (admin) {
 
 }
 
+
 // log channel
 
 let logChannel =
-Bot.getProperty("log_channel");
+  Bot.getProperty("log_channel");
 
 if (logChannel) {
+
+  let appName;
+
+  if (app == "snake") {
+    appName = "Snake Engine";
+  } else if (app == "kos") {
+    appName = "Kos Engine";
+  } else if (app == "aimai") {
+    appName = "AimAI";
+  } else {
+    appName = app;
+  }
 
   Api.sendMessage({
     chat_id: logChannel,
@@ -263,7 +320,10 @@ if (logChannel) {
       "\n🆔 <code>" +
       uid + "</code>" +
 
-      "\n\n🎮 <b>Game:</b> " +
+      "\n\n📦 <b>Engine:</b> " +
+      appName +
+
+      "\n🎮 <b>Game:</b> " +
       game.toUpperCase() +
 
       "\n⏳ <b>Duration:</b> " +
@@ -294,14 +354,36 @@ if (logChannel) {
 // history
 
 let history =
-Bot.getProperty(uid + "_purchase_history") || [];
+  Bot.getProperty(uid + "_purchase_history") || [];
+
+let historyAppName;
+
+if (app == "snake") {
+  historyAppName = "Snake Engine";
+} else if (app == "kos") {
+  historyAppName = "Kos Engine";
+} else if (app == "aimai") {
+  historyAppName = "AimAI";
+} else {
+  historyAppName = app;
+}
+
+let historyEmoji;
+
+if (app == "snake") {
+  historyEmoji = "🐍";
+} else if (app == "kos") {
+  historyEmoji = "🚀";
+} else if (app == "aimai") {
+  historyEmoji = "🤖";
+} else {
+  historyEmoji = "📦";
+}
 
 let entry =
 
-  "🐍 " +
-  (app == "snake"
-    ? "Snake Engine"
-    : "Kos Engine") +
+  historyEmoji + " " +
+  historyAppName +
 
   "\n🎮 Game: " +
   game.toUpperCase() +
@@ -309,7 +391,8 @@ let entry =
   "\n⏳ Duration: " +
   duration + " Days" +
 
-  "\n🔢 Qty: " + qty +
+  "\n🔢 Qty: " +
+  qty +
 
   "\n💰 Paid: ₹" +
   totalPrice +
@@ -321,7 +404,9 @@ let entry =
 
   new Date().toLocaleString(
     "en-IN",
-    { timeZone: "Asia/Kolkata" }
+    {
+      timeZone: "Asia/Kolkata"
+    }
   );
 
 history.unshift(entry);
@@ -334,6 +419,7 @@ Bot.setProperty(
   "json"
 );
 
+
 // reset qty
 
 Bot.setProperty(
@@ -342,6 +428,7 @@ Bot.setProperty(
   "integer"
 );
 
+
 // back to start
 
-Bot.runCommand("/start");
+Bot.runCommand("/startt");

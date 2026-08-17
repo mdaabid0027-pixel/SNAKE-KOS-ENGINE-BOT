@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: upload kos key
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

@@ -1,5 +1,5 @@
-# TechnoAabid_Storebot - chat bot
-It is repository for chat bot: [@TechnoAabid_Storebot](https://t.me/TechnoAabid_Storebot)
+# Cloned bot: TechnoAabid_Storebot - chat bot
+It is repository for chat bot: [@Cloned bot: TechnoAabid_Storebot](https://t.me/Cloned bot: TechnoAabid_Storebot)
 
 ## What it is?
 This repository can be imported to [Bots.Business](https://bots.business) as a worked chat bot.

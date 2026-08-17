@@ -4,7 +4,12 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-  answer: /userhistory USERID
+
+  <<ANSWER
+/userhistory USERID
+/userdeposit Userid "👉 check deposit Recieved of user"
+/paymentstats "👉 check Bot All Recieved Payment ✅
+  ANSWER
 
   <<KEYBOARD
 
@@ -37,6 +42,10 @@ let buttons = [
 [
 { text: "📦 Upload Snake Stock", callback_data: "/stockSnakeEngine" },
 { text: "📦 Upload Kos Stock", callback_data: "/stockKosEngine" }
+],
+
+[
+{ text: "📦 Upload AimAi Stock", callback_data: "/stockAimAI" }
 ],
 
 [

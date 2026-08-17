@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: Kos Engine Download link send
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/

@@ -23,18 +23,50 @@ command: selectGameMenu
 let app = Bot.getProperty(user.telegramid + "_selected_app");
 
 if(app == "snake"){
-  Bot.sendKeyboard(
-    "8BP\nCarrom\nSoccer\n🔙 Back",
-    "Select Game:"
-  );
+  Api.sendMessage({
+    text: "<b>🎮 Select Game</b>\n\n<i>Choose your game below.</i>",
+    parse_mode: "HTML",
+    reply_markup: {
+      keyboard: [
+        [{ text: "8BP", style: "primary" }],
+        [{ text: "Carrom", style: "danger" }],
+        [{ text: "Soccer", style: "success" }],
+        [{ text: "🔙 Back", style: "danger" }]
+      ],
+      resize_keyboard: true
+    }
+  });
   return;
 }
 
 if(app == "kos"){
-  Bot.sendKeyboard(
-    "8BP\nCarrom\nFree Fire\n🔙 Back",
-    "Select Game:"
-  );
+  Api.sendMessage({
+    text: "<b>🎮 Select Game</b>\n\n<i>Choose your game below.</i>",
+    parse_mode: "HTML",
+    reply_markup: {
+      keyboard: [
+        [{ text: "8BP", style: "success" }],
+        [{ text: "Carrom", style: "primary" }],
+        [{ text: "🔙 Back", style: "danger" }]
+      ],
+      resize_keyboard: true
+    }
+  });
+  return;
+}
+
+if(app == "aimai"){
+  Api.sendMessage({
+    text: "<b>🎮 Select Game</b>\n\n<i>Choose your game below.</i>",
+    parse_mode: "HTML",
+    reply_markup: {
+      keyboard: [
+        [{ text: "Carrom", style: "primary" }],
+        [{ text: "🔙 Back", style: "danger" }]
+      ],
+      resize_keyboard: true
+    }
+  });
   return;
 }
 

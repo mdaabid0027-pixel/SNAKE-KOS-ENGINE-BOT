@@ -5,10 +5,7 @@
   auto_retry_time: 
   folder: 
   answer: enter user id
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -30,4 +27,3 @@ if (user.telegramid == 5006281199) {
 } else {
   Bot.sendMessage(" ")
 }
-

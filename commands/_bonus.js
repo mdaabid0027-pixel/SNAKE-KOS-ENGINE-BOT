@@ -4,14 +4,8 @@
   need_reply: false
   auto_retry_time: 
   folder: 
-
-  <<ANSWER
-
-  ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  answer: 
+  keyboard: 
   aliases: 
   group: 
 CMD*/
@@ -71,4 +65,3 @@ Api.sendMessage({
     "💼 <b>New Balance:</b> ₹" + newBalance.toFixed(2),
   parse_mode: "HTML"
 });
-

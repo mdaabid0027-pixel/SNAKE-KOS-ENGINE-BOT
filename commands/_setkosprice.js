@@ -21,10 +21,7 @@
 /setkosprice soccer 15 140
 /setkosprice soccer 30 220
   ANSWER
-
-  <<KEYBOARD
-
-  KEYBOARD
+  keyboard: 
   aliases: 
   group: 
 CMD*/
